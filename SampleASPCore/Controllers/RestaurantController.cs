@@ -33,7 +33,8 @@ namespace SampleASPCore.Controllers
         // GET: Restaurant/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var result = GetRestaurantById(id);
+            return View(result);
         }
 
         // GET: Restaurant/Create
@@ -63,22 +64,37 @@ namespace SampleASPCore.Controllers
         // GET: Restaurant/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            //var result = listRestaurant.Where(r => r.Id == id).SingleOrDefault();
+            var result = GetRestaurantById(id);
+            if (result == null)
+                throw new Exception("Data tidak ditemukan");
+
+            return View(result);
+        }
+
+        public Restaurant GetRestaurantById(int id)
+        {
+            var result = (from r in listRestaurant where r.Id == id select r).SingleOrDefault();
+            return result;
         }
 
         // POST: Restaurant/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Restaurant restaurant)
         {
             try
             {
-                // TODO: Add update logic here
+                var result = GetRestaurantById(restaurant.Id);
+                result.Nama = restaurant.Nama;
+                result.Alamat = restaurant.Alamat;
 
+                TempData["Keterangan"] = $"<div class='alert alert-success'>Data Restaurant {restaurant.Nama} berhasil diedit !</div>";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Error = $"<div class='alert alert-danger'>Pesan Kesalahan {ex.Message}</div>";
                 return View();
             }
         }
@@ -86,22 +102,27 @@ namespace SampleASPCore.Controllers
         // GET: Restaurant/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var result = GetRestaurantById(id);
+            return View(result);
         }
 
         // POST: Restaurant/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        [ActionName("Delete")]
+        public ActionResult DeletePost(int Id)
         {
             try
             {
-                // TODO: Add delete logic here
+                var result = GetRestaurantById(Id);
+                listRestaurant.Remove(result);
 
+                TempData["Keterangan"] = $"<div class='alert alert-success'>Data Restaurant berhasil didelete !</div>";
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Error = $"<div class='alert alert-danger'>Pesan Kesalahan {ex.Message}</div>";
                 return View();
             }
         }
