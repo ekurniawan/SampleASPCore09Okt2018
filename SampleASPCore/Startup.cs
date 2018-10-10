@@ -32,6 +32,7 @@ namespace SampleASPCore
             });
 
             services.AddScoped<IJenis, JenisDALDapper>();
+            services.AddScoped<IRumahmakan, IRumahmakanDAL>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

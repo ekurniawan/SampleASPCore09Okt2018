@@ -36,12 +36,36 @@ namespace SampleASPCore.DAL
 
         public void Delete(string id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"delete from Jenis where JenisID=@JenisID";
+                var param = new { JenisID = id };
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Kesalahan: {sqlEx.Message}");
+                }
+            }
         }
 
         public void Edit(Jenis obj)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"update Jenis set NamaJenis=@NamaJenis where JenisID=@JenisID";
+                var param = new { NamaJenis = obj.NamaJenis, JenisID = obj.JenisID };
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Kesalahan: {sqlEx.Message}");
+                }
+            }
         }
 
         public IEnumerable<Jenis> GetAll()

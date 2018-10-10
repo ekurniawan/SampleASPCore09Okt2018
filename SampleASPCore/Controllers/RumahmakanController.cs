@@ -5,70 +5,51 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SampleASPCore.DAL;
-using SampleASPCore.Models;
 
 namespace SampleASPCore.Controllers
 {
-    public class JenisController : Controller
+    public class RumahmakanController : Controller
     {
-        private IJenis _jenis;
-        public JenisController(IJenis jenis)
+        private IRumahmakan _rumahmakan;
+        public RumahmakanController(IRumahmakan rumahmakan)
         {
-            _jenis = jenis;
+            _rumahmakan = rumahmakan;
         }
 
-        // GET: Jenis
+        // GET: Rumahmakan
         public ActionResult Index()
         {
-            var results = _jenis.GetAll();
+            var results = _rumahmakan.GetRumahmakanWithJenis();
             return View(results);
         }
 
-        // GET: Jenis/Details/5
-        public ActionResult Details(int id)
+        public ActionResult GetAll()
         {
-            var result = _jenis.GetById(id.ToString());
-            return View(result);
+            var results = _rumahmakan.GetAll();
+            return View(results);
         }
 
-        // GET: Jenis/Create
+        // GET: Rumahmakan/Details/5
+        public ActionResult Details(int id)
+        {
+            return View();
+        }
+
+        // GET: Rumahmakan/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Jenis/Create
+        // POST: Rumahmakan/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Jenis jenis)
+        public ActionResult Create(IFormCollection collection)
         {
             try
             {
-                _jenis.Create(jenis);
-                return RedirectToAction(nameof(Index));
-            }
-            catch(Exception ex)
-            {
-                ViewBag.Error = $"Pesan kesalahan: {ex.Message}";
-                return View();
-            }
-        }
+                // TODO: Add insert logic here
 
-        // GET: Jenis/Edit/5
-        public ActionResult Edit(int id)
-        {
-            var result = _jenis.GetById(id.ToString());
-            return View(result);
-        }
-
-        // POST: Jenis/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(Jenis jenis)
-        {
-            try
-            {
-                _jenis.Edit(jenis);
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -77,21 +58,44 @@ namespace SampleASPCore.Controllers
             }
         }
 
-        // GET: Jenis/Delete/5
-        public ActionResult Delete(int id)
+        // GET: Rumahmakan/Edit/5
+        public ActionResult Edit(int id)
         {
-            var result = _jenis.GetById(id.ToString());
-            return View(result);
+            return View();
         }
 
-        // POST: Jenis/Delete/5
+        // POST: Rumahmakan/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(string id)
+        public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
-                _jenis.Delete(id.ToString());
+                // TODO: Add update logic here
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        // GET: Rumahmakan/Delete/5
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        // POST: Rumahmakan/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id, IFormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
                 return RedirectToAction(nameof(Index));
             }
             catch
