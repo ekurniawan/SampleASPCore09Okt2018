@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SampleASPCore.DAL;
+using SampleASPCore.Models;
 
 namespace SampleASPCore.Controllers
 {
@@ -26,7 +27,8 @@ namespace SampleASPCore.Controllers
         // GET: Jenis/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var result = _jenis.GetById(id.ToString());
+            return View(result);
         }
 
         // GET: Jenis/Create
@@ -38,16 +40,16 @@ namespace SampleASPCore.Controllers
         // POST: Jenis/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Jenis jenis)
         {
             try
             {
-                // TODO: Add insert logic here
-
+                _jenis.Create(jenis);
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                ViewBag.Error = $"Pesan kesalahan: {ex.Message}";
                 return View();
             }
         }

@@ -19,7 +19,19 @@ namespace SampleASPCore.DAL
 
         public void Create(Jenis obj)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+                string strSql = @"insert into Jenis(NamaJenis) values(@NamaJenis)";
+                var param = new { NamaJenis = obj.NamaJenis };
+                try
+                {
+                    conn.Execute(strSql, param);
+                }
+                catch (SqlException sqlEx)
+                {
+                    throw new Exception($"Kesalahan: {sqlEx.Message}");
+                }
+            }
         }
 
         public void Delete(string id)
@@ -46,7 +58,7 @@ namespace SampleASPCore.DAL
         {
             using(SqlConnection conn = new SqlConnection(GetConnStr()))
             {
-                string strSql = @"select * from Jenis where Id=@Id";
+                string strSql = @"select * from Jenis where JenisId=@Id";
                 var param = new { Id = id };
                 var results = conn.QuerySingle<Jenis>(strSql, param);
                 return results;
