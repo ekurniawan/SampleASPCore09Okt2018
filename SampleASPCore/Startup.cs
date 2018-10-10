@@ -31,7 +31,7 @@ namespace SampleASPCore
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddScoped<IJenis, JenisDAL>();
+            services.AddScoped<IJenis, JenisDALDapper>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

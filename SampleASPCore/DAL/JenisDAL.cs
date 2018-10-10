@@ -23,7 +23,10 @@ namespace SampleASPCore.DAL
 
         public void Create(Jenis obj)
         {
-            throw new NotImplementedException();
+            using(SqlConnection conn = new SqlConnection(GetConnStr()))
+            {
+
+            }
         }
 
         public void Delete(string id)
